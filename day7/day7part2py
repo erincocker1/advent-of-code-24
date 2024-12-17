@@ -1,0 +1,38 @@
+def main():
+    input = open('day7/input.txt').read().strip().split('\n')
+
+    total = 0
+    for line in input:
+        print('Currently on', line)
+        testValue = int(line.split(':')[0])
+        numbers = [int(x) for x in line.split(':')[1].strip().split(' ')]
+        if isCorrect(numbers, testValue):
+            total += testValue
+    print(total)
+
+        
+def isCorrect(numbers, testValue):
+    for i in range(3 ** (len(numbers)-1)):
+        ternaryNum = '00000000000000' + ternary(i)
+        total = numbers[0]
+        for j in range(1,len(numbers)):
+            if ternaryNum[-j] == '0':
+                total += numbers[j]
+            elif ternaryNum[-j] == '1':
+                total *= numbers[j]
+            else:
+                total = int(str(total)+str(numbers[j]))
+        if total == testValue:
+            return True
+    return False
+
+def ternary(n):
+    if n == 0:
+        return '0'
+    nums = []
+    while n:
+        n, r = divmod(n, 3)
+        nums.append(str(r))
+    return ''.join(reversed(nums))
+
+main()
